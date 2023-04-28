@@ -25,36 +25,58 @@ def letter_validation(letter, guessed):
     return False
 
 
-attempts = 8
-print(f"H A N G M A N")
+def play_game():
+    attempts = 8
 
-word_list = ["python", "java", "swift", "javascript"]
-winner_word = random.choice(word_list)
-letters = set(winner_word)
-guessed_letters = set()
-guessed_word = '-' * len(winner_word)
+    word_list = ["python", "java", "swift", "javascript"]
+    winner_word = random.choice(word_list)
+    letters = set(winner_word)
+    guessed_letters = set()
+    guessed_word = '-' * len(winner_word)
 
-while attempts > 0:
+    while attempts > 0:
 
-    print(f"\n{guessed_word}")
-    input_letter = input("Input a letter:")
+        print(f"\n{guessed_word}")
+        input_letter = input("Input a letter:")
 
-    validation = letter_validation(input_letter, guessed_letters)
-    if not validation:
-        if input_letter in letters:
-            guessed_word = update_word(winner_word, guessed_word, input_letter)
-            guessed_letters.add(input_letter)
+        validation = letter_validation(input_letter, guessed_letters)
+        if not validation:
+            if input_letter in letters:
+                guessed_word = update_word(winner_word, guessed_word, input_letter)
+                guessed_letters.add(input_letter)
+            else:
+                print("That letter doesn't appear in the word.")
+                attempts -= 1
+
+            if "-" not in guessed_word:
+                break
         else:
-            print("That letter doesn't appear in the word.")
-            attempts -= 1
+            print(validation)
 
-        if "-" not in guessed_word:
-            break
+    if "-" in guessed_word:
+        print("\nYou lost!")
+        return False
     else:
-        print(validation)
+        print(f"You guessed the word {guessed_word}!")
+        print("You survived!")
+        return True
 
-if "-" in guessed_word:
-    print("\nYou lost!")
-else:
-    print(f"You guessed the word {guessed_word}!")
-    print("You survived!")
+
+games = 0
+wins = 0
+print("H A N G M A N")
+
+while True:
+
+    menu = input('Type "play" to play the game, "results" to show the scoreboard, and "exit" to quit:')
+
+    if menu == "play":
+        wins += play_game()
+        games += 1
+    elif menu == "results":
+        print(f"You won: {wins} times")
+        print(f"You lost: {games - wins} times")
+    elif menu == "exit":
+        break
+
+
