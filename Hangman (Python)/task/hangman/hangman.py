@@ -1,4 +1,5 @@
 import random
+from string import  ascii_lowercase, ascii_letters
 
 
 def update_word(win_word, g_word, g_letter):
@@ -13,35 +14,47 @@ def update_word(win_word, g_word, g_letter):
     return new_guess
 
 
+def letter_validation(letter, guessed):
+    # print(letter, guessed)
+    if len(letter) != 1:
+        return "Please, input a single letter."
+    if letter not in ascii_lowercase or letter not in ascii_letters:
+        return "Please, enter a lowercase letter from the English alphabet."
+    if letter in guessed:
+        return "You've already guessed this letter."
+    return False
+
+
 attempts = 8
 print(f"H A N G M A N")
 
 word_list = ["python", "java", "swift", "javascript"]
 winner_word = random.choice(word_list)
 letters = set(winner_word)
+guessed_letters = set()
 guessed_word = '-' * len(winner_word)
 
 while attempts > 0:
 
-    print()
-    print(guessed_word)
+    print(f"\n{guessed_word}")
     input_letter = input("Input a letter:")
 
-    if input_letter in guessed_word:
-        print("No improvements")
-        attempts -= 1
-    elif input_letter in letters:
-        guessed_word = update_word(winner_word, guessed_word, input_letter)
-    else:
-        print("That letter doesn't appear in the word.")
-        attempts -= 1
+    validation = letter_validation(input_letter, guessed_letters)
+    if not validation:
+        if input_letter in letters:
+            guessed_word = update_word(winner_word, guessed_word, input_letter)
+            guessed_letters.add(input_letter)
+        else:
+            print("That letter doesn't appear in the word.")
+            attempts -= 1
 
-    if "-" not in guessed_word:
-        print(f"\n{guessed_word}")
-        print("You guessed the word!")
-        break
+        if "-" not in guessed_word:
+            break
+    else:
+        print(validation)
 
 if "-" in guessed_word:
     print("\nYou lost!")
 else:
+    print(f"You guessed the word {guessed_word}!")
     print("You survived!")
