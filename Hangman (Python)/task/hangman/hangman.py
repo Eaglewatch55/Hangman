@@ -26,16 +26,22 @@ while attempts > 0:
     print()
     print(guessed_word)
     input_letter = input("Input a letter:")
-    if input_letter in letters:
+
+    if input_letter in guessed_word:
+        print("No improvements")
+        attempts -= 1
+    elif input_letter in letters:
         guessed_word = update_word(winner_word, guessed_word, input_letter)
     else:
         print("That letter doesn't appear in the word.")
+        attempts -= 1
 
-    attempts -= 1
+    if "-" not in guessed_word:
+        print(f"\n{guessed_word}")
+        print("You guessed the word!")
+        break
 
-print("Thanks for playing!")
-
-# if input_word == winner_word:
-#     print("You survived!")
-# else:
-#     print("You lost!")
+if "-" in guessed_word:
+    print("\nYou lost!")
+else:
+    print("You survived!")
