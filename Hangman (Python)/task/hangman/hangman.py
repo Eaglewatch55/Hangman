@@ -1,5 +1,5 @@
 import random
-from string import  ascii_lowercase, ascii_letters
+from string import ascii_lowercase, ascii_letters
 
 
 def update_word(win_word, g_word, g_letter):
@@ -78,5 +78,3 @@ while True:
         print(f"You lost: {games - wins} times")
     elif menu == "exit":
         break
-
-
